@@ -5,7 +5,7 @@ import { useChats } from "../hooks/useChats";
 import { Message, User } from "../lib/supabase";
 import { Send, Trash2, User as UserIcon } from "lucide-react";
 import { Button } from "@chakra-ui/react";
-import { toaster } from "./ui/toaster";
+import { createToast } from "./ui/toaster";
 import { MenuRoot, MenuTrigger, MenuContent, MenuItem } from "./ui/menu";
 
 interface ChatWindowProps {
@@ -44,7 +44,7 @@ export default function ChatWindow({ selectedChat }: ChatWindowProps) {
       await sendMessage(newMessage.trim());
       setNewMessage("");
     } catch (error) {
-      toaster.create({
+      createToast({
         title: "Error",
         description: "Failed to send message",
         status: "error",
@@ -58,13 +58,13 @@ export default function ChatWindow({ selectedChat }: ChatWindowProps) {
   const handleDeleteMessage = async (messageId: string) => {
     try {
       await deleteMessage(messageId);
-      toaster.create({
+      createToast({
         title: "Message deleted",
         status: "success",
         duration: 2000,
       });
     } catch (error) {
-      toaster.create({
+      createToast({
         title: "Error",
         description: "Failed to delete message",
         status: "error",
@@ -190,6 +190,7 @@ export default function ChatWindow({ selectedChat }: ChatWindowProps) {
                           </MenuTrigger>
                           <MenuContent>
                             <MenuItem
+                              value="delete"
                               onClick={() => handleDeleteMessage(message.id)}
                             >
                               Delete Message
@@ -221,10 +222,10 @@ export default function ChatWindow({ selectedChat }: ChatWindowProps) {
           <Button
             type="submit"
             colorScheme="blue"
-            isLoading={isLoading}
+            loading={isLoading}
             disabled={!newMessage.trim()}
-            leftIcon={<Send className="w-4 h-4" />}
           >
+            <Send className="w-4 h-4 mr-2" />
             Send
           </Button>
         </form>

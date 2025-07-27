@@ -15,7 +15,7 @@ import {
   MoreVertical,
 } from "lucide-react";
 import { Button } from "@chakra-ui/react";
-import { toaster } from "./ui/toaster";
+import { createToast } from "./ui/toaster";
 import { MenuRoot, MenuTrigger, MenuContent, MenuItem } from "./ui/menu";
 
 interface SidebarProps {
@@ -47,13 +47,13 @@ export default function Sidebar({
   ) => {
     try {
       await respondToFriendRequest(requestId, status);
-      toaster.create({
+      createToast({
         title: `Friend request ${status}`,
         status: status === "accepted" ? "success" : "info",
         duration: 2000,
       });
     } catch (error) {
-      toaster.create({
+      createToast({
         title: "Error",
         description: "Failed to respond to friend request",
         status: "error",
@@ -65,13 +65,13 @@ export default function Sidebar({
   const handleRemoveFriend = async (friendId: string) => {
     try {
       await removeFriend(friendId);
-      toaster.create({
+      createToast({
         title: "Friend removed",
         status: "success",
         duration: 2000,
       });
     } catch (error) {
-      toaster.create({
+      createToast({
         title: "Error",
         description: "Failed to remove friend",
         status: "error",
@@ -83,13 +83,13 @@ export default function Sidebar({
   const handleBlockUser = async (userId: string) => {
     try {
       await blockUser(userId);
-      toaster.create({
+      createToast({
         title: "User blocked",
         status: "success",
         duration: 2000,
       });
     } catch (error) {
-      toaster.create({
+      createToast({
         title: "Error",
         description: "Failed to block user",
         status: "error",
@@ -99,9 +99,8 @@ export default function Sidebar({
   };
 
   const getOtherChatMember = (chat: any) => {
-    return chat.chat_members?.find(
-      (member: any) => member.user_id !== profile?.id
-    )?.users;
+    return chat.members?.find((member: any) => member.user_id !== profile?.id)
+      ?.user;
   };
 
   return (
@@ -210,10 +209,16 @@ export default function Sidebar({
                       </Button>
                     </MenuTrigger>
                     <MenuContent>
-                      <MenuItem onClick={() => handleRemoveFriend(friend.id)}>
+                      <MenuItem
+                        value="remove"
+                        onClick={() => handleRemoveFriend(friend.id)}
+                      >
                         Remove Friend
                       </MenuItem>
-                      <MenuItem onClick={() => handleBlockUser(friend.id)}>
+                      <MenuItem
+                        value="block"
+                        onClick={() => handleBlockUser(friend.id)}
+                      >
                         Block User
                       </MenuItem>
                     </MenuContent>
@@ -261,21 +266,21 @@ export default function Sidebar({
                       <Button
                         size="sm"
                         colorScheme="green"
-                        leftIcon={<Check className="w-4 h-4" />}
                         onClick={() =>
                           handleRespondToRequest(request.id, "accepted")
                         }
                       >
+                        <Check className="w-4 h-4 mr-2" />
                         Accept
                       </Button>
                       <Button
                         size="sm"
                         colorScheme="red"
-                        leftIcon={<X className="w-4 h-4" />}
                         onClick={() =>
                           handleRespondToRequest(request.id, "rejected")
                         }
                       >
+                        <X className="w-4 h-4 mr-2" />
                         Reject
                       </Button>
                     </div>

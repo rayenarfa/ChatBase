@@ -153,7 +153,7 @@ export function useChats() {
     try {
       // Check if chat already exists
       const existingChat = chats.find((chat) => {
-        const otherMember = chat.chat_members?.find(
+        const otherMember = chat.members?.find(
           (member) => member.user_id !== user.id
         );
         return otherMember && otherMember.user_id === friendId;
@@ -189,7 +189,7 @@ export function useChats() {
       await fetchChats();
 
       // Set as selected chat
-      const newChat = { ...chat, chat_members: [] };
+      const newChat = { ...chat, members: [] };
       setSelectedChat(newChat);
 
       return newChat;
@@ -201,7 +201,7 @@ export function useChats() {
 
   const getChatWithUser = (userId: string) => {
     return chats.find((chat) => {
-      const otherMember = chat.chat_members?.find(
+      const otherMember = chat.members?.find(
         (member) => member.user_id !== user?.id
       );
       return otherMember && otherMember.user_id === userId;

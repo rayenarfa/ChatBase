@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   Toaster as ChakraToaster,
@@ -7,12 +7,39 @@ import {
   Stack,
   Toast,
   createToaster,
-} from "@chakra-ui/react"
+} from "@chakra-ui/react";
 
 export const toaster = createToaster({
   placement: "bottom-end",
   pauseOnPageIdle: true,
-})
+});
+
+// Helper function to create toasts with status
+export const createToast = (options: {
+  title?: string;
+  description?: string;
+  status?: "success" | "error" | "warning" | "info";
+  duration?: number;
+}) => {
+  const { title, description, status = "info", duration = 3000 } = options;
+
+  // Map status to toast type
+  const type =
+    status === "error"
+      ? "error"
+      : status === "success"
+      ? "success"
+      : status === "warning"
+      ? "warning"
+      : "info";
+
+  return toaster.create({
+    title,
+    description,
+    type,
+    duration,
+  });
+};
 
 export const Toaster = () => {
   return (
@@ -39,5 +66,5 @@ export const Toaster = () => {
         )}
       </ChakraToaster>
     </Portal>
-  )
-}
+  );
+};

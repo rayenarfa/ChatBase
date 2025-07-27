@@ -5,7 +5,7 @@ import { useFriends } from "../hooks/useFriends";
 import { supabase, User } from "../lib/supabase";
 import { Search, UserPlus, X } from "lucide-react";
 import { Button, Input } from "@chakra-ui/react";
-import { toaster } from "./ui/toaster";
+import { createToast } from "./ui/toaster";
 import {
   DialogRoot,
   DialogTrigger,
@@ -48,7 +48,7 @@ export default function AddFriendModal({
       setSearchResults(data || []);
     } catch (error) {
       console.error("Error searching users:", error);
-      toaster.create({
+      createToast({
         title: "Error",
         description: "Failed to search users",
         status: "error",
@@ -65,7 +65,7 @@ export default function AddFriendModal({
       // Check if user is blocked
       const blocked = await isBlocked(userId);
       if (blocked) {
-        toaster.create({
+        createToast({
           title: "Cannot send request",
           description: "This user has blocked you or you have blocked them",
           status: "error",
@@ -75,14 +75,14 @@ export default function AddFriendModal({
       }
 
       await sendFriendRequest(userId);
-      toaster.create({
+      createToast({
         title: "Friend request sent",
         status: "success",
         duration: 2000,
       });
       onClose();
     } catch (error) {
-      toaster.create({
+      createToast({
         title: "Error",
         description: "Failed to send friend request",
         status: "error",
@@ -129,10 +129,10 @@ export default function AddFriendModal({
                 />
                 <Button
                   onClick={handleSearch}
-                  isLoading={isSearching}
+                  loading={isSearching}
                   colorScheme="blue"
-                  leftIcon={<Search className="w-4 h-4" />}
                 >
+                  <Search className="w-4 h-4 mr-2" />
                   Search
                 </Button>
               </div>
@@ -167,10 +167,10 @@ export default function AddFriendModal({
                     <Button
                       size="sm"
                       colorScheme="blue"
-                      leftIcon={<UserPlus className="w-4 h-4" />}
                       onClick={() => handleSendRequest(result.id)}
-                      isLoading={isSendingRequest}
+                      loading={isSendingRequest}
                     >
+                      <UserPlus className="w-4 h-4 mr-2" />
                       Add
                     </Button>
                   </motion.div>

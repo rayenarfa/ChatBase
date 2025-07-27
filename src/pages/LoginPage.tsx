@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useAuth } from "../contexts/AuthContext";
 import { Button } from "@chakra-ui/react";
-import { toaster } from "../components/ui/toaster";
+import { createToast } from "../components/ui/toaster";
 import { FcGoogle } from "react-icons/fc";
 
 export default function LoginPage() {
@@ -11,7 +11,7 @@ export default function LoginPage() {
     try {
       await signInWithGoogle();
     } catch (error) {
-      toaster.create({
+      createToast({
         title: "Sign in failed",
         description: "Please try again",
         status: "error",
@@ -74,9 +74,9 @@ export default function LoginPage() {
             _active={{
               bg: "gray.100",
             }}
-            leftIcon={<FcGoogle size={20} />}
             className="font-medium"
           >
+            <FcGoogle size={20} className="mr-2" />
             Continue with Google
           </Button>
         </motion.div>

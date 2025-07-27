@@ -10,7 +10,7 @@ import ChatWindow from "../components/ChatWindow";
 import AddFriendModal from "../components/AddFriendModal";
 import { Button } from "@chakra-ui/react";
 import { UserPlus } from "lucide-react";
-import { toaster } from "../components/ui/toaster";
+import { createToast } from "../components/ui/toaster";
 
 export default function ChatPage() {
   const { user, profile, updateProfile } = useAuth();
@@ -51,7 +51,7 @@ export default function ChatPage() {
         setActiveTab("chats");
       }
     } catch (error) {
-      toaster.create({
+      createToast({
         title: "Error",
         description: "Failed to create chat",
         status: "error",
@@ -108,8 +108,8 @@ export default function ChatPage() {
               <Button
                 onClick={() => setIsAddFriendModalOpen(true)}
                 colorScheme="blue"
-                leftIcon={<UserPlus className="w-4 h-4" />}
               >
+                <UserPlus className="w-4 h-4 mr-2" />
                 Add Friend
               </Button>
             </div>
