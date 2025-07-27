@@ -30,6 +30,11 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 }
 
 function AppRoutes() {
+  const { user, loading } = useAuth();
+
+  // Add debugging
+  console.log("AppRoutes - User:", user?.email, "Loading:", loading);
+
   return (
     <Router>
       <Routes>
